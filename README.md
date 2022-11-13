@@ -1,6 +1,8 @@
 # my-design-patterns-notes
 Notes on Design Patterns
 
+![](design_patterns.jpg)
+
 ### Chapter 1 - Strategy pattern
 
 Design principles:
@@ -383,3 +385,13 @@ public class Caramel extends CondimentDecorator {
 }
 ```
 
+### Chapter 4 - Factory Method pattern
+Factories handle the details of object creation.
+A factory method handles object creation and encapsulates it in a subclass. This decouples the client code in the superclass from the object creation code in the sublcass.
+
+With the Factory Method pattern, we have Creator classes and Product classes:
+- Creator classes, often have an abstract creator class that defines an abstract factory method, that subclasses (factory methods) implement to produce a product.
+- Product classes, all the products (objects) that are produced by the creator classes.
+
+
+Design principles:
