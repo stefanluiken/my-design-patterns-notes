@@ -395,3 +395,43 @@ With the Factory Method pattern, we have Creator classes and Product classes:
 
 
 Design principles:
+
+### Chapter 5 - Singleton pattern
+The Singleton Pattern ensures a class has only one instance, and provides a global point of access to it: 
+
+```java
+public class Singleton {
+
+    private volatile static Singleton uniqueInstance;
+
+    private Singleton() {}
+
+    // By adding the synchronized keyword, we force every thread to wait its turn before it can enter the method.
+    // We only do this during the first run!
+    public static synchronized Singleton getInstance() {
+        if (uniqueInstance == null) {
+            synchronized (Singleton.class) {
+                if (uniqueInstance == null) {
+                    uniqueInstance = new Singleton();
+                }
+            }
+        }
+        return uniqueInstance;
+    }
+
+}
+```
+
+Or in Enum form:
+
+```java
+public enum SingletonEnum {
+    UNIQUE_INSTANCE;
+}
+
+public class SingletonClient {
+    public void main(String[] args) {
+        SingletonEnum singletonEnum = SingletonEnum.UNIQUE_INSTANCE;
+    }
+}
+```
