@@ -387,14 +387,21 @@ public class Caramel extends CondimentDecorator {
 
 ### Chapter 4 - Factory Method pattern
 Factories handle the details of object creation.
-A factory method handles object creation and encapsulates it in a subclass. This decouples the client code in the superclass from the object creation code in the sublcass.
+A factory method handles object creation and encapsulates it in a subclass. This decouples the client code in the superclass from the object creation code in the subclass.
 
 With the Factory Method pattern, we have Creator classes and Product classes:
 - Creator classes, often have an abstract creator class that defines an abstract factory method, that subclasses (factory methods) implement to produce a product.
 - Product classes, all the products (objects) that are produced by the creator classes.
 
-
 Design principles:
+
+- The Dependency Inversion Principle: we should depend on abstractions. We should not depend on concrete classes. For instance, a store that directly creates objects (concrete implementations), makes the factory (high-level) dependent on changes in the corresponding low-level components.
+- Three rules that avoid violating this principle:
+  - No variable should hold a reference to a concrete class (we should only use the "new" keyword in a factory).
+  - No class should derive from a concrete class.
+  - No method should override an implemented method of its base classes.
+
+- The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes.
 
 ### Chapter 5 - Singleton pattern
 The Singleton Pattern ensures a class has only one instance, and provides a global point of access to it: 
@@ -435,3 +442,4 @@ public class SingletonClient {
     }
 }
 ```
+
