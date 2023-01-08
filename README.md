@@ -443,3 +443,107 @@ public class SingletonClient {
 }
 ```
 
+### Chapter 6 - Encapsulating Invocation
+The Command Patterns allows to decouple the requester of an action from the object that actually performs the action.
+We can say two processes are decoupled, when they do not know of each other, for instance when an encapsulated process in the middle connects them.
+
+Design principles:
+
+- The Command Pattern encapsulates a request as an object, thereby letting you parameterize other objects with different requests, queue or log requests, and support undoable operations.
+- A Command object is at the center of this decoupling abd encapsulates a receiver with an action (or a set of actions).
+- An invoker makes a request of a Command object by calling its execute() method, which invokes those actions on the receiver.
+
+```java
+public class RemoteLoader {
+
+    public static void main(String[] args) {
+        RemoteControl remoteControl = new RemoteControl();
+
+        Light livingRoomLight = new Light("Living Room");
+        LightOnCommand livingRoomLightOn = new LightOnCommand(livingRoomLight);
+        LightOffCommand livingRoomLightOff = new LightOffCommand(livingRoomLight);
+
+        remoteControl.setCommand(0, livingRoomLightOn, livingRoomLightOff);
+        System.out.println(remoteControl);
+
+        remoteControl.onButtonWasPushed(0);
+        remoteControl.offButtonWasPushed(0);
+    }
+}
+```
+
+```java
+public class RemoteControl {
+    Command[] onCommands;
+    Command[] offCommands;
+
+    public RemoteControl() {
+        onCommands = new Command[7];
+        offCommands = new Command[7];
+
+        Command noCommand = new NoCommand();
+        for (int i = 0; i < 7; i++) {
+            onCommands[i] = noCommand;
+            offCommands[i] = noCommand;
+        }
+    }
+
+    public void setCommand(int slot, Command onCommand, Command offCommand) {
+        onCommands[slot] = onCommand;
+        offCommands[slot] = offCommand;
+    }
+
+    public void onButtonWasPushed(int slot) {
+        onCommands[slot].execute();
+    }
+
+    public void offButtonWasPushed(int slot) {
+        offCommands[slot].execute();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("\n --- Remote Control ---\n");
+        for (int i = 0; i < onCommands.length; i++) {
+            stringBuffer.append("slot" + i + ": \n" + onCommands[i].getClass().getName() + "\n" + offCommands[i].getClass().getName() + "\n");
+        }
+        return stringBuffer.toString();
+    }
+}
+```
+
+```java
+public interface Command {
+    public void execute();
+}
+```
+
+```java
+public class LightOnCommand implements Command {
+
+    Light light;
+
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+    @Override
+    public void execute() {
+        light.on();
+    }
+}
+```
+
+```java
+public class LightOffCommand implements Command {
+    Light light;
+
+    public LightOffCommand(Light light) {
+        this.light = light;
+    }
+    @Override
+    public void execute() {
+        light.off();
+    }
+}
+```
